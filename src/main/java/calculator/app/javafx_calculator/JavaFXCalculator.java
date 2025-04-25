@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.ColumnConstraints;
@@ -16,8 +17,10 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 
 public class JavaFXCalculator extends Application {
-    private TextField tfDisplay;    // display textfield
+    private TextField tfDisplay;// display textfield
     private Button[] btns;          // 16 buttons
+    private TextArea memoryText;
+    private double[] memory;
     private String[] btnLabels = {  // Labels of 16 buttons
             "7", "8", "9", "+",
             "4", "5", "6", "-",
@@ -50,6 +53,32 @@ public class JavaFXCalculator extends Application {
                 }
                 break;
 
+                //Memory calc buttons
+            case "M+": //Memory Add
+
+                break;
+
+            case "MR": //Memory Recall
+
+                break;
+
+            case "M-": //Memory Subtract
+
+                break;
+
+            case "MC": //Memory Clear
+
+                break;
+
+            case "power":
+                compute();
+                lastOperator = '^';
+                break;
+
+            case "square root":
+                                //Needs logic
+                break;
+
             // Operator buttons: '+', '-', 'x', '/' and '='
             case "+":
                 compute();
@@ -73,11 +102,19 @@ public class JavaFXCalculator extends Application {
                 break;
 
             // Clear button
-            case "C":
+            case "clear entry":
                 result = 0;
                 inStr = "0";
                 lastOperator = ' ';
                 tfDisplay.setText("0");
+                break;
+
+            case "clear":
+                inStr = "0";
+                tfDisplay.setText("0");
+                break;
+
+            case "backspace":
                 break;
         }
     };
@@ -112,6 +149,10 @@ public class JavaFXCalculator extends Application {
         tfDisplay.setEditable(false);
         tfDisplay.setAlignment(Pos.CENTER_RIGHT);
 
+        memoryText = new TextArea("");
+        memoryText.setEditable(false);
+        memoryText.setWrapText(true);
+
         // Setup a GridPane for 4x4 Buttons
         int numCols = 4;
         int numRows = 4;
@@ -136,6 +177,8 @@ public class JavaFXCalculator extends Application {
             btns[i].setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);  // full-width
             paneButton.add(btns[i], i % numCols, i / numCols);  // control, col, row
         }
+
+
 
         // Setup up the scene graph rooted at a BorderPane (of 5 zones)
         BorderPane root = new BorderPane();
