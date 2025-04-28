@@ -21,13 +21,15 @@ public class JavaFXCalculator extends Application {
     private Button[] btns;          // 16 buttons
     private TextArea memoryText;
     private double[] memory;
-    private String[] btnLabels = {
-            "MC", "MR", "M+", "M-",
-            "7", "8", "9", "+",
-            "4", "5", "6", "-",
-            "1", "2", "3", "x",
-            "0", "C", "=", "/",
-            "power", "square root", "clear", "clear entry", "backspace"
+    private String[] btnLabels = {// Labels of 16 buttons
+            "Off", "Color", "C", "CE",
+            "M+", "M-", "MR", "MC",
+            "^",  "√",  "←",  "-",
+            "7",  "8",  "9",  "x",
+            "4",  "5",  "6",  "/",
+            "1",  "2",  "3",  "+",
+            ".",  "0",  "(-)","=",
+
     };
     // For computation
     private int result = 0;      // Result of computation
@@ -72,12 +74,12 @@ public class JavaFXCalculator extends Application {
 
                 break;
 
-            case "power":
+            case "^":
                 compute();
                 lastOperator = '^';
                 break;
 
-            case "square root":
+            case "√":
                 if (lastOperator != '=') {
                     result = (int)Double.parseDouble(inStr);
                 }
@@ -114,19 +116,19 @@ public class JavaFXCalculator extends Application {
                 break;
 
             // Clear button
-            case "clear entry":
+            case "C":
                 result = 0;
                 inStr = "0";
                 lastOperator = ' ';
                 tfDisplay.setText("0");
                 break;
 
-            case "clear":
+            case "CE":
                 inStr = "0";
                 tfDisplay.setText("0");
                 break;
 
-            case "backspace":
+            case "←":
                 if (inStr.length() == 1) {
                     inStr = "0";
                 } else {
@@ -136,8 +138,6 @@ public class JavaFXCalculator extends Application {
                 break;
         }
     };
-
-
 
     // User pushes '+', '-', '*', '/' or '=' button.
     // Perform computation on the previous result and the current input number,
@@ -175,7 +175,7 @@ public class JavaFXCalculator extends Application {
 
         // Setup a GridPane for 4x4 Buttons
         int numCols = 4;
-        int numRows = 4;
+        int numRows = 7;
         GridPane paneButton = new GridPane();
         paneButton.setPadding(new Insets(15, 0, 15, 0));  // top, right, bottom, left
         paneButton.setVgap(5);  // Vertical gap between nodes
@@ -190,7 +190,7 @@ public class JavaFXCalculator extends Application {
         }
 
         // Setup 16 Buttons and add to GridPane; and event handler
-        btns = new Button[16];
+        btns = new Button[28];
         for (int i = 0; i < btns.length; ++i) {
             btns[i] = new Button(btnLabels[i]);
             btns[i].setOnAction(handler);  // Register event handler
