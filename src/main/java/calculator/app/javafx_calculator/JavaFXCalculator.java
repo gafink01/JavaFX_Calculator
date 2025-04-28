@@ -137,7 +137,6 @@ public class JavaFXCalculator extends Application {
         }
     };
 
-
     // User pushes '+', '-', '*', '/' or '=' button.
     // Perform computation on the previous result and the current input number,
     // based on the previous operator.
