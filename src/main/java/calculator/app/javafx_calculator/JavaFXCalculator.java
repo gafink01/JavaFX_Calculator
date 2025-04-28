@@ -21,11 +21,13 @@ public class JavaFXCalculator extends Application {
     private Button[] btns;          // 16 buttons
     private TextArea memoryText;
     private double[] memory;
-    private String[] btnLabels = {  // Labels of 16 buttons
+    private String[] btnLabels = {
+            "MC", "MR", "M+", "M-",
             "7", "8", "9", "+",
             "4", "5", "6", "-",
             "1", "2", "3", "x",
-            "C", "0", "=", "/"
+            "0", "C", "=", "/",
+            "power", "square root", "clear", "clear entry", "backspace"
     };
     // For computation
     private int result = 0;      // Result of computation
@@ -76,7 +78,17 @@ public class JavaFXCalculator extends Application {
                 break;
 
             case "square root":
-                                //Needs logic
+                if (lastOperator != '=') {
+                    result = (int)Double.parseDouble(inStr);
+                }
+                if (result >= 0) {
+                    double sqrtResult = Math.sqrt(result);
+                    inStr = String.valueOf((int)sqrtResult);
+                    tfDisplay.setText(inStr);
+                } else {
+                    tfDisplay.setText("Error");
+                    inStr = "0";
+                }
                 break;
 
             // Operator buttons: '+', '-', 'x', '/' and '='
@@ -115,6 +127,12 @@ public class JavaFXCalculator extends Application {
                 break;
 
             case "backspace":
+                if (inStr.length() == 1) {
+                    inStr = "0";
+                } else {
+                    inStr = inStr.substring(0, inStr.length() - 1);
+                }
+                tfDisplay.setText(inStr);
                 break;
         }
     };
