@@ -32,7 +32,7 @@ public class JavaFXCalculator extends Application {
 
     };
     // For computation
-    private int result = 0;      // Result of computation
+    private double result = 0;      // Result of computation
     private String inStr = "0";  // Input number as String
     // Previous operator: ' '(nothing), '+', '-', '*', '/', '='
     private char lastOperator = ' ';
@@ -42,16 +42,8 @@ public class JavaFXCalculator extends Application {
         String currentBtnLabel = ((Button)evt.getSource()).getText();
         switch (currentBtnLabel) {
             // Number buttons
-            case "0":
-            case "1":
-            case "2":
-            case "3":
-            case "4":
-            case "5":
-            case "6":
-            case "7":
-            case "8":
-            case "9":
+            case "0": case "1": case "2": case "3": case "4":
+            case "5": case "6": case "7": case "8": case "9": case ".":
                 if (inStr.equals("0")) {
                     inStr = currentBtnLabel;  // no leading zero
                 } else {
@@ -89,6 +81,7 @@ public class JavaFXCalculator extends Application {
 
             case "MC": // Memory Clear
 
+                break;
 
             case "^":
                 compute();
@@ -97,11 +90,11 @@ public class JavaFXCalculator extends Application {
 
             case "√":
                 if (lastOperator != '=') {
-                    result = (int)Double.parseDouble(inStr);
+                    result = (double) Double.parseDouble(inStr);
                 }
                 if (result >= 0) {
                     double sqrtResult = Math.sqrt(result);
-                    inStr = String.valueOf((int)sqrtResult);
+                    inStr = String.valueOf((double)sqrtResult);
                     tfDisplay.setText(inStr);
                 } else {
                     tfDisplay.setText("Error");
@@ -159,7 +152,7 @@ public class JavaFXCalculator extends Application {
     // Perform computation on the previous result and the current input number,
     // based on the previous operator.
     private void compute() {
-        int inNum = Integer.parseInt(inStr);
+        double inNum = Double.parseDouble(inStr);
         inStr = "0";
         if (lastOperator == ' ') {
             result = inNum;
