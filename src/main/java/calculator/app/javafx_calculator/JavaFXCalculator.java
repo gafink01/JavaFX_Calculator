@@ -20,7 +20,7 @@ public class JavaFXCalculator extends Application {
     private TextField tfDisplay;// display textfield
     private Button[] btns;          // 16 buttons
     private TextArea memoryText;
-    private double[] memory;
+    private double memory;
     private String[] btnLabels = {// Labels of 16 buttons
             "Off", "Color", "C", "CE",
             "M+", "M-", "MR", "MC",
@@ -42,8 +42,16 @@ public class JavaFXCalculator extends Application {
         String currentBtnLabel = ((Button)evt.getSource()).getText();
         switch (currentBtnLabel) {
             // Number buttons
-            case "0": case "1": case "2": case "3": case "4":
-            case "5": case "6": case "7": case "8": case "9":
+            case "0":
+            case "1":
+            case "2":
+            case "3":
+            case "4":
+            case "5":
+            case "6":
+            case "7":
+            case "8":
+            case "9":
                 if (inStr.equals("0")) {
                     inStr = currentBtnLabel;  // no leading zero
                 } else {
@@ -57,22 +65,31 @@ public class JavaFXCalculator extends Application {
                 }
                 break;
 
-                //Memory calc buttons
-            case "M+": //Memory Add
-
+            //Memory calc buttons
+            case "M+": // Memory Add
+                if (lastOperator != '=') {
+                    memory += Double.parseDouble(inStr);
+                } else {
+                    memory += result;
+                }
+                memoryText.setText("Memory = " + memory);
                 break;
 
-            case "MR": //Memory Recall
+            case "M-": // Memory Subtract
+                if (lastOperator != '=') {
+                    memory -= Double.parseDouble(inStr);
+                } else {
+                        memory -= result;
+        }
+        memoryText.setText("Memory = " + memory);
+        break;
 
-                break;
+            case "MR": // Memory Recall
 
-            case "M-": //Memory Subtract
 
-                break;
+            case "MC": // Memory Clear
 
-            case "MC": //Memory Clear
 
-                break;
 
             case "^":
                 compute();
