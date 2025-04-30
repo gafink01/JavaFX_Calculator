@@ -90,7 +90,6 @@ public class JavaFXCalculator extends Application {
             case "MC": // Memory Clear
 
 
-
             case "^":
                 compute();
                 lastOperator = '^';
