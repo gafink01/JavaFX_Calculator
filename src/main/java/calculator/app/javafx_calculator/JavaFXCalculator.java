@@ -178,9 +178,6 @@ public class JavaFXCalculator extends Application {
         tfDisplay.setEditable(false);
         tfDisplay.setAlignment(Pos.CENTER_RIGHT);
 
-        memoryText = new TextArea("");
-        memoryText.setEditable(false);
-        memoryText.setWrapText(true);
 
         // Setup a GridPane for 4x4 Buttons
         int numCols = 4;
@@ -198,6 +195,8 @@ public class JavaFXCalculator extends Application {
             paneButton.getColumnConstraints().add(columns[i]);
         }
 
+
+
         // Setup 16 Buttons and add to GridPane; and event handler
         btns = new Button[28];
         for (int i = 0; i < btns.length; ++i) {
@@ -207,6 +206,9 @@ public class JavaFXCalculator extends Application {
             paneButton.add(btns[i], i % numCols, i / numCols);  // control, col, row
         }
 
+        TextArea memoryText = new TextArea("Memory = " + memory);
+        memoryText.setEditable(false);
+        memoryText.setWrapText(true);
 
 
         // Setup up the scene graph rooted at a BorderPane (of 5 zones)
@@ -214,6 +216,7 @@ public class JavaFXCalculator extends Application {
         root.setPadding(new Insets(15, 15, 15, 15));  // top, right, bottom, left
         root.setTop(tfDisplay);     // Top zone contains the TextField
         root.setCenter(paneButton); // Center zone contains the GridPane of Buttons
+        root.setBottom(memoryText);
 
         // Set up scene and stage
         primaryStage.setScene(new Scene(root, 300, 300));
