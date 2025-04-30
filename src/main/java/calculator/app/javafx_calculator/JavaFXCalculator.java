@@ -38,7 +38,6 @@ public class JavaFXCalculator extends Application {
     private String inStr = "0";  // Input number as String
     // Previous operator: ' '(nothing), '+', '-', '*', '/', '='
     private char lastOperator = ' ';
-    private int colorButton;
 
     // Event handler for all the 16 Buttons
     EventHandler handler = evt -> {
@@ -65,7 +64,7 @@ public class JavaFXCalculator extends Application {
                 if (lastOperator != '=') {
                     memory += Double.parseDouble(inStr);
                 } else {
-                    memory += result;
+                    result += memory;
                 }
                 memoryText.setText("Memory = " + memory);
                 break;
@@ -74,15 +73,21 @@ public class JavaFXCalculator extends Application {
                 if (lastOperator != '=') {
                     memory -= Double.parseDouble(inStr);
                 } else {
-                        memory -= result;
-                }
-                memoryText.setText("Memory = " + memory);
+                        result -= memory;
+        }
+        break;
+
+            case "MR":
+            inStr = String.valueOf(memory);
+                tfDisplay.setText(inStr);
                 break;
 
-            case "MR": // Memory Recall
 
 
             case "MC": // Memory Clear
+               memory = 0.0;
+
+               memoryText.setText("Memory = " + memory);
 
                 break;
 
