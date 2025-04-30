@@ -62,7 +62,7 @@ public class JavaFXCalculator extends Application {
                 if (lastOperator != '=') {
                     memory += Double.parseDouble(inStr);
                 } else {
-                    memory += result;
+                    result += memory;
                 }
                 memoryText.setText("Memory = " + memory);
                 break;
@@ -71,15 +71,21 @@ public class JavaFXCalculator extends Application {
                 if (lastOperator != '=') {
                     memory -= Double.parseDouble(inStr);
                 } else {
-                        memory -= result;
+                        result -= memory;
         }
-        memoryText.setText("Memory = " + memory);
         break;
 
-            case "MR": // Memory Recall
+            case "MR":
+            inStr = String.valueOf(memory);
+                tfDisplay.setText(inStr);
+                break;
+
 
 
             case "MC": // Memory Clear
+               memory = 0.0;
+
+               memoryText.setText("Memory = " + memory);
 
                 break;
 
