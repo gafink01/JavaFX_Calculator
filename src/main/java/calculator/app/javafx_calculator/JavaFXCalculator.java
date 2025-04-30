@@ -16,9 +16,11 @@ import javafx.stage.Stage;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 
+import java.math.MathContext;
+
 public class JavaFXCalculator extends Application {
     private TextField tfDisplay;// display textfield
-    private Button[] btns;          // 16 buttons
+    private Button[] btns;          // 16 buttons\
     private TextArea memoryText;
     private double memory;
     private String[] btnLabels = {// Labels of 16 buttons
@@ -36,6 +38,7 @@ public class JavaFXCalculator extends Application {
     private String inStr = "0";  // Input number as String
     // Previous operator: ' '(nothing), '+', '-', '*', '/', '='
     private char lastOperator = ' ';
+    private int colorButton;
 
     // Event handler for all the 16 Buttons
     EventHandler handler = evt -> {
@@ -72,15 +75,20 @@ public class JavaFXCalculator extends Application {
                     memory -= Double.parseDouble(inStr);
                 } else {
                         memory -= result;
-        }
-        memoryText.setText("Memory = " + memory);
-        break;
+                }
+                memoryText.setText("Memory = " + memory);
+                break;
 
             case "MR": // Memory Recall
 
 
             case "MC": // Memory Clear
 
+                break;
+
+            case "Color":
+                colorButton++;
+                updateColors(colorButton);
                 break;
 
             case "^":
@@ -148,6 +156,30 @@ public class JavaFXCalculator extends Application {
         }
     };
 
+    private void updateColors(int colorButton){
+        colorButton = colorButton%4;
+        if(colorButton == 0){
+            for(int i = 0; i < btns.length; i++){
+                btns[i].setStyle("-fx-color: whitesmoke   ");
+            }
+
+        } else if (colorButton == 1) {
+            for(int i = 0; i < btns.length; i++){
+            btns[i].setStyle("-fx-color: snow  ");
+        }
+
+        } else if (colorButton == 2) {
+            for(int i = 0; i < btns.length; i++){
+                btns[i].setStyle("-fx-color: gainsboro ");
+            }
+        } else if (colorButton == 3) {
+            for(int i = 0; i < btns.length; i++){
+                btns[i].setStyle("-fx-color: plum  ");
+            }
+        }
+
+    }
+
     // User pushes '+', '-', '*', '/' or '=' button.
     // Perform computation on the previous result and the current input number,
     // based on the previous operator.
@@ -204,6 +236,11 @@ public class JavaFXCalculator extends Application {
             btns[i].setOnAction(handler);  // Register event handler
             btns[i].setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);  // full-width
             paneButton.add(btns[i], i % numCols, i / numCols);  // control, col, row
+            btns[i].setStyle("-fx-color: whitesmoke");
+
+
+
+
         }
 
         TextArea memoryText = new TextArea("Memory = " + memory);
