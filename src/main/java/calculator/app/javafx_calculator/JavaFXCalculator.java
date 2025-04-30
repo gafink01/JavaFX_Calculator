@@ -216,6 +216,7 @@ public class JavaFXCalculator extends Application {
         tfDisplay.setAlignment(Pos.CENTER_RIGHT);
 
 
+
         // Setup a GridPane for 4x4 Buttons
         int numCols = 4;
         int numRows = 7;
