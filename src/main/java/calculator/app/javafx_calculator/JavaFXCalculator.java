@@ -22,15 +22,15 @@ public class JavaFXCalculator extends Application {
     private TextField tfDisplay;// display textfield
     private Button[] btns;          // 16 buttons\
     private TextArea memoryText;
-    private double memory;
+    private double memory = 0;
     private String[] btnLabels = {// Labels of 16 buttons
             "Off", "Color", "C", "CE",
             "M+", "M-", "MR", "MC",
-            "^",  "√",  "←",  "-",
-            "7",  "8",  "9",  "x",
-            "4",  "5",  "6",  "/",
-            "1",  "2",  "3",  "+",
-            ".",  "0",  "(-)","=",
+            "^", "√", "←", "-",
+            "7", "8", "9", "x",
+            "4", "5", "6", "/",
+            "1", "2", "3", "+",
+            ".", "0", "(-)", "=",
 
     };
     // For computation
@@ -38,14 +38,24 @@ public class JavaFXCalculator extends Application {
     private String inStr = "0";  // Input number as String
     // Previous operator: ' '(nothing), '+', '-', '*', '/', '='
     private char lastOperator = ' ';
+    private int colorButton = 0;
 
     // Event handler for all the 16 Buttons
     EventHandler handler = evt -> {
-        String currentBtnLabel = ((Button)evt.getSource()).getText();
+        String currentBtnLabel = ((Button) evt.getSource()).getText();
         switch (currentBtnLabel) {
             // Number buttons
-            case "0": case "1": case "2": case "3": case "4":
-            case "5": case "6": case "7": case "8": case "9": case ".":
+            case "0":
+            case "1":
+            case "2":
+            case "3":
+            case "4":
+            case "5":
+            case "6":
+            case "7":
+            case "8":
+            case "9":
+            case ".":
                 if (inStr.equals("0")) {
                     inStr = currentBtnLabel;  // no leading zero
                 } else {
@@ -80,10 +90,6 @@ public class JavaFXCalculator extends Application {
                tfDisplay.setText("Memory: 0.0");
                 break;
 
-            case "Color":
-                colorButton++;
-                updateColors(colorButton);
-                break;
 
             case "^":
                 compute();
@@ -150,29 +156,8 @@ public class JavaFXCalculator extends Application {
         }
     };
 
-    private void updateColors(int colorButton){
-        colorButton = colorButton%4;
-        if(colorButton == 0){
-            for(int i = 0; i < btns.length; i++){
-                btns[i].setStyle("-fx-color: whitesmoke   ");
-            }
 
-        } else if (colorButton == 1) {
-            for(int i = 0; i < btns.length; i++){
-            btns[i].setStyle("-fx-color: snow  ");
-        }
 
-        } else if (colorButton == 2) {
-            for(int i = 0; i < btns.length; i++){
-                btns[i].setStyle("-fx-color: gainsboro ");
-            }
-        } else if (colorButton == 3) {
-            for(int i = 0; i < btns.length; i++){
-                btns[i].setStyle("-fx-color: plum  ");
-            }
-        }
-
-    }
 
     // User pushes '+', '-', '*', '/' or '=' button.
     // Perform computation on the previous result and the current input number,
@@ -231,16 +216,65 @@ public class JavaFXCalculator extends Application {
             btns[i].setOnAction(handler);  // Register event handler
             btns[i].setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);  // full-width
             paneButton.add(btns[i], i % numCols, i / numCols);  // control, col, row
-            btns[i].setStyle("-fx-color: whitesmoke");
+            switch(btnLabels[i]) {
+                default:
+                    btns[i].setStyle("-fx-color: whitesmoke");
+                    break;
+
+                case "C": case "CE": case "←":
+                    btns[i].setStyle("-fx-color: orangered");
+                    break;
+
+                case "Off":
+                    btns[i].setStyle("-fx-color: red");
+                    break;
+
+                    case "Color":
+                        btns[i].setStyle("-fx-color: orange");
+                        btns[i].setOnAction(ActionEvent ->{
+                            colorButton++;
+                            colorButton = colorButton %4;
+                            switch(colorButton) {
+                                case 0:
+
+                                    break;
+
+                                case 1:
+
+                                    break;
+
+                                case 2:
+
+                                    break;
+                                case 3:
+
+                                    break;
+                                default:
+
+                                    break;
+                            }
+
+                        });
+                        break;
+            }
 
 
 
 
         }
 
+        GridPane memoryPane = new GridPane();
+        memoryPane.setPadding(new Insets(15, 0, 15, 0));  // top, right, bottom, left
+        memoryPane.setVgap(5);  // Vertical gap between nodes
+        memoryPane.setHgap(5);  // Horizontal gap between nodes
+
         TextArea memoryText = new TextArea("Memory = " + memory);
         memoryText.setEditable(false);
         memoryText.setWrapText(true);
+        memoryText.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        memoryText.setStyle("-fx-fill: black");
+        memoryPane.getChildren().add(memoryText);
+        memoryPane.setAlignment(Pos.CENTER);
 
 
         // Setup up the scene graph rooted at a BorderPane (of 5 zones)
@@ -248,10 +282,11 @@ public class JavaFXCalculator extends Application {
         root.setPadding(new Insets(15, 15, 15, 15));  // top, right, bottom, left
         root.setTop(tfDisplay);     // Top zone contains the TextField
         root.setCenter(paneButton); // Center zone contains the GridPane of Buttons
-        root.setBottom(memoryText);
+        root.setBottom(memoryPane);
+        root.setStyle("-fx-background-color: whitesmoke");
 
         // Set up scene and stage
-        primaryStage.setScene(new Scene(root, 300, 300));
+        primaryStage.setScene(new Scene(root, 300, 500));
         primaryStage.setTitle("JavaFX Calculator");
         primaryStage.show();
     }
