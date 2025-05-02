@@ -59,34 +59,23 @@ public class JavaFXCalculator extends Application {
 
             //Memory calc buttons
             case "M+": // Memory Add
-                if (lastOperator != '=') {
-                    memory += Double.parseDouble(inStr);
-                } else {
-                    result += memory;
-                }
-                memoryText.setText("Memory = " + memory);
-                break;
-
-            case "M-": // Memory Subtract
-                if (lastOperator != '=') {
-                    memory -= Double.parseDouble(inStr);
-                } else {
-                        result -= memory;
-        }
-        break;
-
-            case "MR":
-            inStr = String.valueOf(memory);
+                memory += Double.parseDouble(tfDisplay.getText());
                 tfDisplay.setText(inStr);
                 break;
 
+            case "M-": // Memory Subtract
+                memory -= Double.parseDouble(tfDisplay.getText());
+                tfDisplay.setText(inStr);
+                break;
 
+            case "MR":
+            inStr = (memory % 1 == 0) ? String.valueOf((int) memory) : "0" + String.valueOf(memory);
+                tfDisplay.setText(inStr);
+                break;
 
             case "MC": // Memory Clear
                memory = 0.0;
-
-               memoryText.setText("Memory = " + memory);
-
+               tfDisplay.setText("Memory: 0.0");
                 break;
 
             case "^":
