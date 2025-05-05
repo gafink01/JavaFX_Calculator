@@ -23,8 +23,8 @@ public class JavaFXCalculator extends Application {
     private TextField tfDisplay;// display textfield
     private Button[] btns;          // 16 buttons\
     private double memory = 0;
-    TextArea memoryText = new TextArea("Memory = " + memory);
-    private String[] btnLabels = {// Labels of 16 buttons
+    TextArea memoryText = new TextArea("Memory = " + memory); //declared at the start so it can be edited
+    private String[] btnLabels = {// Labels of 28 buttons
             "Off", "Color", "C", "CE",
             "M+", "M-", "MR", "MC",
             "^", "√", "←", "-",
@@ -84,7 +84,7 @@ public class JavaFXCalculator extends Application {
 
                 break;
 
-            case "MR":
+            case "MR": //Memory Recall
             inStr = (memory % 1 == 0) ? String.valueOf((int) memory) : "0" + String.valueOf(memory);
                 tfDisplay.setText(inStr);
                 break;
@@ -96,12 +96,12 @@ public class JavaFXCalculator extends Application {
                 break;
 
 
-            case "^":
+            case "^": //power
                 compute();
                 lastOperator = '^';
                 break;
 
-            case "√":
+            case "√": //Square root
                 if (lastOperator != '=') {
                     result = (double) Double.parseDouble(inStr);
                 }
@@ -145,12 +145,12 @@ public class JavaFXCalculator extends Application {
                 tfDisplay.setText("0");
                 break;
 
-            case "CE":
+            case "CE": //clear entry
                 inStr = "0";
                 tfDisplay.setText("0");
                 break;
 
-            case "←":
+            case "←": //backspace
                 if (inStr.length() == 1) {
                     inStr = "0";
                 } else {
@@ -218,7 +218,6 @@ public class JavaFXCalculator extends Application {
         memoryPane.setPadding(new Insets(15, 0, 15, 0));  // top, right, bottom, left
         memoryPane.setVgap(5);  // Vertical gap between nodes
         memoryPane.setHgap(5);  // Horizontal gap between nodes
-
         memoryText.setEditable(false);
         memoryText.setWrapText(true);
         memoryText.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
@@ -226,7 +225,7 @@ public class JavaFXCalculator extends Application {
         memoryPane.getChildren().add(memoryText);
         memoryPane.setAlignment(Pos.CENTER);
 
-        // Setup 16 Buttons and add to GridPane; and event handler
+        // Setup 28 Buttons and add to GridPane; and event handler
         btns = new Button[28];
         for (int i = 0; i < btns.length; ++i) {
             btns[i] = new Button(btnLabels[i]);
@@ -234,33 +233,37 @@ public class JavaFXCalculator extends Application {
             btns[i].setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);  // full-width
             paneButton.add(btns[i], i % numCols, i / numCols);  // control, col, row
             switch(btnLabels[i]) {
-                default:
+                default: //set the color for default buttons
                     btns[i].setStyle("-fx-color: whitesmoke");
                     break;
 
+                    //different colors for operators
                 case "^": case "√": case "+": case "-": case "x": case "/": case "=":
                     btns[i].setStyle("-fx-color: goldenrod");
                     break;
 
+                    //different colors for clear/backspace
                 case "C": case "CE": case "←":
                     btns[i].setStyle("-fx-color: coral");
                     break;
 
+                    //different color for off button
                 case "Off":
                     btns[i].setStyle("-fx-color: red");
                     btns[i].setOnAction(ActionEvent -> Platform.exit());
                     break;
 
+                    //different color for memory button
                 case "M+": case "M-": case "MR": case "MC":
                     btns[i].setStyle("-fx-color: Gold");
                     break;
 
                 case "Color":
                     btns[i].setStyle("-fx-color: orange");
-                    btns[i].setOnAction(ActionEvent ->{
+                    btns[i].setOnAction(ActionEvent ->{ //custom event handler for color button
                         colorButton++;
                         colorButton = colorButton %4;
-                        switch(colorButton) {
+                        switch(colorButton) { //set to swap through 4 colors can be easily expanded for more
                             case 0:
                                 root.setStyle("-fx-background-color: whitesmoke");
                                 memoryText.setStyle("-fx-fill: whitesmoke");
