@@ -238,6 +238,10 @@ public class JavaFXCalculator extends Application {
                     btns[i].setStyle("-fx-color: whitesmoke");
                     break;
 
+                case "^": case "√": case "+": case "-": case "x": case "/": case "=":
+                    btns[i].setStyle("-fx-color: goldenrod");
+                    break;
+
                 case "C": case "CE": case "←":
                     btns[i].setStyle("-fx-color: coral");
                     break;
