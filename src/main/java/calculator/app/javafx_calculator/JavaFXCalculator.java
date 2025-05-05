@@ -1,6 +1,7 @@
 package calculator.app.javafx_calculator;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -21,8 +22,8 @@ import java.math.MathContext;
 public class JavaFXCalculator extends Application {
     private TextField tfDisplay;// display textfield
     private Button[] btns;          // 16 buttons\
-    private TextArea memoryText;
     private double memory = 0;
+    TextArea memoryText = new TextArea("Memory = " + memory);
     private String[] btnLabels = {// Labels of 16 buttons
             "Off", "Color", "C", "CE",
             "M+", "M-", "MR", "MC",
@@ -73,11 +74,14 @@ public class JavaFXCalculator extends Application {
             case "M+": // Memory Add
                 memory += Double.parseDouble(tfDisplay.getText());
                 tfDisplay.setText(inStr);
+                memoryText.setText("Memory = " + memory);
                 break;
 
             case "M-": // Memory Subtract
                 memory -= Double.parseDouble(tfDisplay.getText());
                 tfDisplay.setText(inStr);
+                memoryText.setText("Memory = " + memory);
+
                 break;
 
             case "MR":
@@ -86,8 +90,9 @@ public class JavaFXCalculator extends Application {
                 break;
 
             case "MC": // Memory Clear
-               memory = 0.0;
-               tfDisplay.setText("Memory: 0.0");
+                memory = 0.0;
+                tfDisplay.setText("Memory: 0.0");
+                memoryText.setText("Memory = " + memory);
                 break;
 
 
@@ -208,6 +213,18 @@ public class JavaFXCalculator extends Application {
         }
 
 
+        BorderPane root = new BorderPane();
+        GridPane memoryPane = new GridPane();
+        memoryPane.setPadding(new Insets(15, 0, 15, 0));  // top, right, bottom, left
+        memoryPane.setVgap(5);  // Vertical gap between nodes
+        memoryPane.setHgap(5);  // Horizontal gap between nodes
+
+        memoryText.setEditable(false);
+        memoryText.setWrapText(true);
+        memoryText.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        memoryText.setStyle("-fx-fill: black");
+        memoryPane.getChildren().add(memoryText);
+        memoryPane.setAlignment(Pos.CENTER);
 
         // Setup 16 Buttons and add to GridPane; and event handler
         btns = new Button[28];
@@ -222,40 +239,50 @@ public class JavaFXCalculator extends Application {
                     break;
 
                 case "C": case "CE": case "←":
-                    btns[i].setStyle("-fx-color: orangered");
+                    btns[i].setStyle("-fx-color: coral");
                     break;
 
                 case "Off":
                     btns[i].setStyle("-fx-color: red");
+                    btns[i].setOnAction(ActionEvent -> Platform.exit());
                     break;
 
-                    case "Color":
-                        btns[i].setStyle("-fx-color: orange");
-                        btns[i].setOnAction(ActionEvent ->{
-                            colorButton++;
-                            colorButton = colorButton %4;
-                            switch(colorButton) {
-                                case 0:
+                case "M+": case "M-": case "MR": case "MC":
+                    btns[i].setStyle("-fx-color: Gold");
+                    break;
 
-                                    break;
+                case "Color":
+                    btns[i].setStyle("-fx-color: orange");
+                    btns[i].setOnAction(ActionEvent ->{
+                        colorButton++;
+                        colorButton = colorButton %4;
+                        switch(colorButton) {
+                            case 0:
+                                root.setStyle("-fx-background-color: whitesmoke");
+                                memoryText.setStyle("-fx-fill: whitesmoke");
+                                break;
 
-                                case 1:
+                            case 1:
+                                root.setStyle("-fx-background-color: black");
+                                memoryText.setStyle("-fx-fill: black");
+                                break;
 
-                                    break;
+                            case 2:
+                                root.setStyle("-fx-background-color: gold");
+                                memoryText.setStyle("-fx-fill: gold");
+                                break;
+                            case 3:
+                                root.setStyle("-fx-background-color: pink");
+                                memoryText.setStyle("-fx-fill: pink");
+                                break;
+                            default:
+                                root.setStyle("-fx-background-color: whitesmoke");
+                                memoryText.setStyle("-fx-background-color: whitesmoke");
+                                break;
+                        }
 
-                                case 2:
-
-                                    break;
-                                case 3:
-
-                                    break;
-                                default:
-
-                                    break;
-                            }
-
-                        });
-                        break;
+                    });
+                    break;
             }
 
 
@@ -263,27 +290,14 @@ public class JavaFXCalculator extends Application {
 
         }
 
-        GridPane memoryPane = new GridPane();
-        memoryPane.setPadding(new Insets(15, 0, 15, 0));  // top, right, bottom, left
-        memoryPane.setVgap(5);  // Vertical gap between nodes
-        memoryPane.setHgap(5);  // Horizontal gap between nodes
 
-        TextArea memoryText = new TextArea("Memory = " + memory);
-        memoryText.setEditable(false);
-        memoryText.setWrapText(true);
-        memoryText.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-        memoryText.setStyle("-fx-fill: black");
-        memoryPane.getChildren().add(memoryText);
-        memoryPane.setAlignment(Pos.CENTER);
 
 
         // Setup up the scene graph rooted at a BorderPane (of 5 zones)
-        BorderPane root = new BorderPane();
         root.setPadding(new Insets(15, 15, 15, 15));  // top, right, bottom, left
         root.setTop(tfDisplay);     // Top zone contains the TextField
         root.setCenter(paneButton); // Center zone contains the GridPane of Buttons
         root.setBottom(memoryPane);
-        root.setStyle("-fx-background-color: whitesmoke");
 
         // Set up scene and stage
         primaryStage.setScene(new Scene(root, 300, 500));
